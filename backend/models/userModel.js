@@ -22,11 +22,11 @@ const userSchema = new Schema(
     },
 
     // Optional details
-    pickUp: { type: String },
-    drop: { type: String },
+    pickUp: { type: String, default : null},
+    drop: { type: String , default :null},
     onLeave: { type: Boolean, default: false },
-    seatingCapacity: { type: Number },
-    numberPlate: { type: String },
+    seatingCapacity: { type: Number, default : 0 },
+    numberPlate: { type: String , default : null },
   },
   // Options for the schema
   { timestamps: true }

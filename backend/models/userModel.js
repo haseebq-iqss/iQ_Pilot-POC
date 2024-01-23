@@ -7,7 +7,7 @@ const userSchema = new Schema(
     name: { type: String, required: true },
     email: { type: String, required: true },
     phone: { type: Number, required: true },
-    password: { type: Number, required: true },
+    password: { type: String, required: true },
     address: { type: String, required: true },
 
     // Additional details
@@ -25,7 +25,6 @@ const userSchema = new Schema(
     pickUp: { type: String },
     drop: { type: String },
     onLeave: { type: Boolean, default: false },
-    startingPoint: { type: String },
     seatingCapacity: { type: Number },
     numberPlate: { type: String },
   },
@@ -33,6 +32,6 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-const userModel = mongoose.model(userSchema)
+const userModel = mongoose.model("userModel",userSchema)
 // Export the employee schema
 export default userModel;

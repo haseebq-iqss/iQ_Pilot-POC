@@ -13,7 +13,7 @@ app.use(express.json())
 connectToMongo();
 
 
-app.use("/api/v1/route", userRouter)
+app.use("/api/v1/users", userRouter)
 app.use("/api/v1/route", routeRouter);
 app.use("/api/v1/rideReview", rideReviewRouter);
 app.use("/api/v1/routeReview", routeReviewRouter);

@@ -5,7 +5,7 @@ export const createRideReview = async (req, res) => {
         const newRideReview = await RideReview.create(req.body);
         res.status(201).json(newRideReview);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(400).json({ error: error.message });
     }
 };
 
@@ -14,7 +14,7 @@ export const getAllRideReviews = async (req, res) => {
         const rideReviews = await RideReview.find();
         res.status(200).json(rideReviews);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(400).json({ error: error.message });
     }
 };
 
@@ -23,7 +23,7 @@ export const getRideReviewById = async (req, res) => {
         const rideReview = await RideReview.findById(req.params.id);
         res.status(200).json(rideReview);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(400).json({ error: error.message });
     }
 };
 
@@ -36,7 +36,7 @@ export const updateRideReview = async (req, res) => {
         );
         res.status(200).json(updatedReview);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(400).json({ error: error.message });
     }
 };
 

@@ -28,7 +28,7 @@ const getUser = async (req, res) => {
   }
 };
 
-const addUser = async (req, res) => {
+const signUp = async (req, res) => {
   try {
     const user = await userModel.create(req.body);
     res.status(201).json({
@@ -36,7 +36,7 @@ const addUser = async (req, res) => {
       user,
     });
   } catch (error) {
-    res.status(500).json({
+    res.status(400).json({
       error: error.message,
     });
   }
@@ -79,7 +79,7 @@ const updateUser = async (req, res) => {
         newUser
     })
   } catch (error) {
-    res.status(500).json({
+    res.status(400).json({
         error : error.message
     })
   }
@@ -90,7 +90,7 @@ const deleteUser = async (req, res) => {
     try {
         const id = req.params.id
         await userModel.findByIdAndDelete(id)  
-        res.status(200).json({
+        res.status(204).json({
             message : "User Deleted"
         })
     } catch (error) {
@@ -100,4 +100,4 @@ const deleteUser = async (req, res) => {
     }
 };
 
-export { getAllUsers, getUser, updateUser, addUser, deleteUser , login};
+export { getAllUsers, getUser, updateUser, signUp, deleteUser , login};

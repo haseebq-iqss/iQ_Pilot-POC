@@ -6,6 +6,15 @@
     justify-content: center;
     align-items: flex-start;
     gap:15px;
+
+    .dash-controls {
+      width: 100%;
+      padding: 0px 50px;
+      display: flex;
+      margin-top: 10px;
+      flex-direction: row;
+      justify-content: space-between;
+    }
     
     .shifts-div {
         width: 100%;

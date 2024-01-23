@@ -1,3 +1,10 @@
+@mixin Flex() {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
 .admin-dash-container {
   width: 100%;
   min-height: 100vh;
@@ -5,7 +12,15 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  gap:15px;
+  gap: 15px;
+
+  .dash-controls {
+    width: 100%;
+    padding: 0px 50px;
+    @include Flex();
+    flex-direction: row;
+    justify-content: space-between;
+  }
 
   .stat-div {
     width: 100%;
@@ -19,7 +34,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 15px;
+    padding: 15px 50px;
+    border-radius: 10px;
     border: 2px solid black;
   }
 }

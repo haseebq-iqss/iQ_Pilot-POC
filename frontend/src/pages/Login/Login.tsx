@@ -1,10 +1,22 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import Btn from "../../components/Button";
+import { FormEvent } from "react";
 
 function Login() {
   const location = useLocation();
   const navigate = useNavigate();
   const user = location.state;
+
+  const handleLogin = (e: FormEvent<any>) => {
+    e.preventDefault();
+    const loginData = {
+      email: e.currentTarget?.email?.value,
+      password: e.currentTarget?.password?.value,
+    };
+
+    console.log(loginData);
+  };
+
   return (
     <div
       style={{
@@ -18,7 +30,10 @@ function Login() {
       }}
       className="login-container"
     >
+      <h1>LOGIN</h1>
+      <h4>Welcome, {user}</h4>
       <form
+        onSubmit={(e) => handleLogin(e)}
         style={{
           display: "flex",
           flexDirection: "column",
@@ -27,15 +42,16 @@ function Login() {
           gap: "25px",
         }}
       >
-        <h1>LOGIN</h1>
-        <h4>Welcome, {user}</h4>
-
         <input
+          required
+          name="email"
           style={{ padding: "10px 15px" }}
-          type="text"
+          type="email"
           placeholder="Email"
         />
         <input
+          required
+          name="password"
           style={{ padding: "10px 15px" }}
           type="password"
           placeholder="Password"
@@ -48,7 +64,7 @@ function Login() {
                 ? "/driver"
                 : user === "admin"
                 ? "/admin"
-                : "employee"
+                : "/employee"
             )
           }
         >

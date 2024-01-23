@@ -7,12 +7,14 @@ function AdminDashboard() {
   const navigate = useNavigate();
   return (
     <div className="admin-dash-container">
-      <Btn style={{ marginLeft: "auto", marginRight: "100px" }}>
+      <div className="dash-controls">
+      <Btn onClick={() => navigate("/")}>
+        Logout
+      </Btn>
+      <Btn>
         + Schedule a Route
       </Btn>
-      <Btn onClick={() => navigate("/")} style={{ marginLeft: "100px" }}>
-        - Logout
-      </Btn>
+      </div>
       <div className="stat-div">
         <div className="stat">
           <h1>4</h1>

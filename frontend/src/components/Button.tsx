@@ -9,10 +9,11 @@ function Btn({ children, style, ...rest }: BtnProps) {
   return (
     <button
       style={{
-        padding: "5px 25px",
+        padding: "7.5px 25px",
         borderRadius: "2.5px",
         backgroundColor: "white",
         color: "black",
+        cursor: "pointer",
         borderColor: "black",
         fontWeight: 600,
         ...style,

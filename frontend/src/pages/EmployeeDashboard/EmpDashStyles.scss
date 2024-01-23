@@ -1,0 +1,52 @@
+.emp-dash-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .cab-detail-card {
+    position: absolute;
+    bottom: 25px;
+    left: 25px;
+    z-index: 500; // limit of leaflet z-index is 500
+    background-color: white;
+    padding: 25px 50px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+
+    .driver {
+      display: flex;
+      // flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+
+      img {
+        object-fit: cover;
+        border-radius: 100%;
+      }
+    }
+
+    .number-plate {
+      border: 2px solid grey;
+      padding: 10px;
+    }
+  }
+
+  .option-card {
+    position: absolute;
+    bottom: 25px;
+    right: 25px;
+    z-index: 500; // limit of leaflet z-index is 500
+    background-color: white;
+    padding: 25px 50px;
+    display: flex;
+    flex-direction: column;
+    gap:25px;
+  }
+}

@@ -19,6 +19,7 @@ const userSchema = new Schema(
       type: String,
       enum: ['admin', 'employee', 'driver'],
       required: true,
+      default : "employee"
     },
 
     // Optional details

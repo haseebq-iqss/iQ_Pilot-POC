@@ -40,10 +40,23 @@ function Login() {
           type="password"
           placeholder="Password"
         />
-        <Btn type="submit">Login</Btn>
+        {/* <Btn type="submit">Login</Btn> */}
+        <Btn
+          onClick={() =>
+            navigate(
+              user === "driver"
+                ? "/driver"
+                : user === "admin"
+                ? "/admin"
+                : "employee"
+            )
+          }
+        >
+          Login
+        </Btn>
       </form>
       <p>OR</p>
-      <Btn onClick={() => navigate("/signup", {state: user})}>Signup</Btn>
+      <Btn onClick={() => navigate("/signup", { state: user })}>Signup</Btn>
     </div>
   );
 }

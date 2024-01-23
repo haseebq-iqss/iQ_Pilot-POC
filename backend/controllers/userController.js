@@ -42,6 +42,29 @@ const addUser = async (req, res) => {
   }
 };
 
+const login = async (req, res) => {
+  try {
+    const {email, password} = req.body
+
+    const user = await userModel.findOne({email, password})
+    
+    if(!user){
+      console.log("first")
+      return res.status(404).json({message : "User Not Found"})
+    }
+  
+    req.user = user
+  
+    res.status(200).json({
+      user 
+    })
+  } catch (error) {
+    res.status(400).json({
+      error : error.message
+    })
+  }
+}
+
 const updateUser = async (req, res) => {
   try {
 
@@ -78,4 +101,4 @@ const deleteUser = async (req, res) => {
     }
 };
 
-export { getAllUsers, getUser, updateUser, addUser, deleteUser };
+export { getAllUsers, getUser, updateUser, addUser, deleteUser , login};

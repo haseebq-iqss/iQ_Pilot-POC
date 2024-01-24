@@ -18,6 +18,7 @@ app.use("/api/v1/users", userRouter)
 app.use("/api/v1/routes", routeRouter);
 app.use("/api/v1/rideReview", rideReviewRouter);
 app.use("/api/v1/routeReview", routeReviewRouter);
+app.use("/api/v1/getAllRoutes", routeReviewRouter);
 
 
 const PORT = process.env.PORT;

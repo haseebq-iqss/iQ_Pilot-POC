@@ -9,10 +9,14 @@ import {
 } from "../controllers/userController.js";
 import restrictTo from "../middleware/restrictTo.js";
 import getAllDrivers from "../controllers/viewAll/getAllDrivers.js";
+import getAllRoutes from "../controllers/viewAll/getAllRoutes.js";
+
 import { getAllTeamMembers } from "../controllers/viewAll/getAllTM.js";
 const userRouter = express.Router();
 
 userRouter.get("/getAllDrivers", getAllDrivers);
+userRouter.get("/getAllRoutes", getAllRoutes);
+
 userRouter.get("/employees", getAllTeamMembers)
 userRouter.route("/").get(getAllUsers);
 userRouter.route("/:id").get(getUser).put(updateUser).delete(deleteUser);

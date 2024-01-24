@@ -57,8 +57,9 @@ const signUp = async (req, res) => {
   }
 };
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   try {
+    l;
     const { email, password } = req.body;
     const user = await userModel.findOne({ email, password });
 
@@ -68,7 +69,7 @@ const login = async (req, res) => {
         message: "User not found",
       });
     }
-
+    req.user = user;
     res.status(200).json({
       status: 200,
       message: "Login successful",
@@ -80,6 +81,7 @@ const login = async (req, res) => {
       error: error.message,
     });
   }
+  next();
 };
 
 const updateUser = async (req, res) => {

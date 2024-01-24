@@ -79,7 +79,7 @@ const updateRoute = async (req, res) => {
 const deleteRoute = async (req, res) => {
   try {
     const id = req.params.id;
-    const deletedRoute = await userModel.findByIdAndDelete(id);
+    const deletedRoute = await routeModel.findByIdAndDelete(id);
 
     if (!deletedRoute) {
       return res.status(404).json({

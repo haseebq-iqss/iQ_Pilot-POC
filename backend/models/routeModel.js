@@ -6,7 +6,7 @@ const routeSchema = new Schema(
 
     passengers: [{ type: String, required: true }],
 
-    shiftTime: { type: Date, required: true },
+    shiftTime: { type: String, required: true },
 
     routeStatus: {
       type: String,

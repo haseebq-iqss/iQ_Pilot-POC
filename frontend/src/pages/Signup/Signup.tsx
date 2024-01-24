@@ -11,12 +11,12 @@ function Signup() {
   const askForLocation = () => {
     navigator.geolocation.getCurrentPosition(
       (pos) => {
-        alert([pos.coords.latitude, pos.coords.longitude]);
+        alert(`Location coordinates set : ${[pos.coords.latitude, pos.coords.longitude]}`);
         setLatLon([pos.coords.latitude, pos.coords.longitude]);
         // setPosition([pos.coords.latitude, pos.coords.longitude]);)
       },
       (err) => {
-        alert(err);
+        alert(`Location Not Set! ${err}`);
       },
       { enableHighAccuracy: true, maximumAge: 1000 }
     );
@@ -36,6 +36,7 @@ function Signup() {
 
     console.log(signupData);
   };
+
   return (
     <div
       style={{
@@ -67,45 +68,45 @@ function Signup() {
           style={{ padding: "10px 15px" }}
           type="text"
           placeholder="Name"
-          />
+        />
         <input
           required
           name="phone"
           style={{ padding: "10px 15px" }}
           type="number"
           placeholder="Phone"
-          />
+        />
         <input
           required
           name="email"
           style={{ padding: "10px 15px" }}
           type="text"
           placeholder="Email"
-          />
-        <Btn onClick={() => askForLocation()}>Set Pickup Location</Btn>
+        />
+        <Btn onClick={() => askForLocation()}>{user === "driver" ? "Set Starting Point" : "Set Pickup Location"}</Btn>
         <input
           required
           name="address"
           style={{ padding: "10px 15px" }}
           type="text"
           placeholder="Address"
-          />
+        />
         {user === "driver" && (
           <>
             <input
-          required
-          name="seatingCapacity"
-          style={{ padding: "10px 15px" }}
-          type="number"
-          placeholder="Seating Capacity"
-          />
+              required
+              name="seatingCapacity"
+              style={{ padding: "10px 15px" }}
+              type="number"
+              placeholder="Seating Capacity"
+            />
             <input
               required
               name="numberPlate"
               style={{ padding: "10px 15px" }}
               type="text"
               placeholder="numberPlate"
-              />
+            />
           </>
         )}
         <input
@@ -114,19 +115,21 @@ function Signup() {
           style={{ padding: "10px 15px" }}
           type="password"
           placeholder="Password"
-          />
+        />
         <input
           required
           name="confirmPassword"
           style={{ padding: "10px 15px" }}
           type="password"
           placeholder="Confirm Password"
-          />
+        />
 
         <Btn type="submit">Register</Btn>
       </form>
+      <>
       <p>OR</p>
       <Btn onClick={() => navigate("/login", { state: user })}>Login</Btn>
+      </>
     </div>
   );
 }

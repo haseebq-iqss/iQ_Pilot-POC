@@ -71,8 +71,12 @@ function Login() {
           Login
         </Btn>
       </form>
-      <p>OR</p>
-      <Btn onClick={() => navigate("/signup", { state: user })}>Signup</Btn>
+      {user !== "admin" && (
+        <>
+          <p>OR</p>
+          <Btn onClick={() => navigate("/signup", { state: user })}>Signup</Btn>
+        </>
+      )}
     </div>
   );
 }

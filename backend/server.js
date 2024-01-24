@@ -23,3 +23,25 @@ const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log("SERVER IS RUNNING ON PORT", PORT);
 });
+
+
+
+// ADMIN ACTIONS 
+//  login
+//  createRoute
+//  viewAllRoutes
+//  viewAllDrivers
+//  viewAllTeamMembers
+
+// DRIVER ACTION
+// login
+// signup
+// markEmployeeAttendence
+// viewAssignedRoutes (with nested Team Member Objects)
+
+// EMPLOYEE ACTIONS
+// login
+// signup
+// cancelCab
+// markOnLeave
+

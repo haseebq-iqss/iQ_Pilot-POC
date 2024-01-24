@@ -7,6 +7,16 @@ const routeSchema = new Schema(
     passengers: [{ type: String, required: true }],
 
     shiftTime: { type: Date, required: true },
+
+    routeStatus: {
+      type: String,
+      enum: ['notStarted', 'inProgress', 'completed'],
+      default : "notStarted"
+    } ,
+
+    pickedPassengers: [{ type: String, default: 0}],
+    
+    totalDistance : {type: Number, default : 0}
   },
   { timestamps: true }
 );

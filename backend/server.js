@@ -5,13 +5,14 @@ import routeRouter from "./routes/routeRoutes.js";
 import routeReviewRouter from "./routes/routeReviewRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import rideReviewRouter from "./routes/rideReviewRoutes.js";
+import cors from "cors"
 
 configDotenv();
 
 const app = express();
 app.use(express.json())
 connectToMongo();
-
+app.use(cors())
 
 app.use("/api/v1/users", userRouter)
 app.use("/api/v1/routes", routeRouter);

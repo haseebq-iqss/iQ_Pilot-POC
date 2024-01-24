@@ -28,11 +28,11 @@ app.listen(PORT, () => {
 
 
 // ADMIN ACTIONS 
-//  login (done - Umair )   EOD Thursday
-//  createRoute ( Umair ) EOD Thursday
-//  viewAllRoutes ( Azeem ) EOD Thursday
-//  viewAllDrivers ( Saaib )  EOD Thursday
-//  viewAllTeamMembers ( Arshiya )  EOD Thursday
+//  login (done - Umair )   EOD Thursday DONE
+//  createRoute ( Umair ) EOD Thursday DONE
+//  viewAllRoutes ( Azeem ) EOD Thursday DONE
+//  viewAllDrivers ( Saaib )  EOD Thursday DONE
+//  viewAllTeamMembers ( Arshiya )  EOD Thursday DONE
 
 // DRIVER ACTION
 // login <same as login in Admin>(done - Umair) EOD Thursday

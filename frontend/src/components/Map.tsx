@@ -45,9 +45,10 @@ const MapComponent = ({
 
   const sendLocation = () => {
     // const driverId = userData?._id;
-    if (userData?.role ==="driver") {
+    console.log(userData)
+    // if (userData?.role == "driver") {
       socket.emit("driver-location", driversPosition);
-    }
+    // }
   };
 
   sendLocation();

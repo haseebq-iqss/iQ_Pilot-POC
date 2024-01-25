@@ -132,6 +132,8 @@ const MapComponent = ({
         return emp.pickUp;
       })
     : [];
+
+    console.log(allRouting)
   // const allRoutingX = [
   //   [34.0158662, 74.8034567],
   //   [34.0396279, 74.7934329],
@@ -167,7 +169,7 @@ const MapComponent = ({
         )}
 
         <MapController />
-        {allEmps.length &&
+        {allEmps?.length &&
           allEmps.map((marker: any) => {
             // console.log(marker.pickup)
             return (
@@ -178,6 +180,18 @@ const MapComponent = ({
                 }}
                 key={marker._id}
                 position={marker.pickUp}
+              />
+            );
+          })}
+
+        {markersArray?.length &&
+          markersArray.map((marker: any) => {
+            // console.log(marker.pickup)
+            return (
+              <Marker
+                icon={empIcon}
+                key={marker}
+                position={marker}
               />
             );
           })}

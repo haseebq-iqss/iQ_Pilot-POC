@@ -3,13 +3,17 @@ import Btn from "../../components/Button";
 import MapComponent from "../../components/Map";
 import "./EmpDashStyles.scss";
 import UserDataContext from "../../context/UserDataContext";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useAxios } from "../../hooks/useAxios";
+import AllEmployeesContext from "../../context/AllEmployeesContext";
 
 function EmployeeDashboard() {
   const navigate = useNavigate();
   const { userData } = useContext(UserDataContext);
+  const { allEmps, setAllEmps } = useContext(AllEmployeesContext);
+
+  const [passengers, setPassengers] = useState([]);
 
   const getPassengerRoutesQF = () => {
     return useAxios.get(`routes/getPassengersCab/${userData?._id}`);
@@ -23,6 +27,22 @@ function EmployeeDashboard() {
     },
   });
 
+  useEffect(() => {
+    if (routesStatus === "success") {
+      const newPassengers = myCab?.passengers.map((passens) => passens.pickUp);
+
+      const uniquePickUps = new Set([...passengers, ...newPassengers]);
+
+      const uniquePickUpsArray = Array.from(uniquePickUps);
+  
+      setPassengers(uniquePickUpsArray);
+    }
+  }, [myCab])
+
+  
+  // console.log(passengers)
+
+
   const getMyDriverQF = () => {
     return useAxios.get(`users/${myCab?.assignedToDriver}`);
   };
@@ -32,7 +52,7 @@ function EmployeeDashboard() {
     queryFn: getMyDriverQF,
     enabled: routesStatus === "success",
     select: (data) => {
-      return data?.data?.data
+      return data?.data?.data;
     },
   });
 
@@ -58,7 +78,8 @@ function EmployeeDashboard() {
         </Btn>
         <Btn>+ Schedule a Route</Btn>
       </div>
-      <MapComponent height="100vh" />
+      {/* @ts-ignore */}
+      <MapComponent routingEnabled={true} markersArray={passengers} height="100vh" />
     </div>
   );
 }

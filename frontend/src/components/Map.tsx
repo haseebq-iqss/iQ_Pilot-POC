@@ -158,9 +158,9 @@ const MapComponent = ({
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
 
-        {/* {driversLocation && (
+        {driversPosition && (
           <Marker icon={cabIcon} position={driversPosition} />
-          )} */}
+          )}
 
         {liveDrivers?.length && (
           <Marker icon={cabIcon} position={liveDrivers} />

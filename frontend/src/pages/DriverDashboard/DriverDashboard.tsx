@@ -17,24 +17,26 @@ function DriverDashboard() {
     34.0079909, 74.80378,
   ]);
 
-  const askForLocation = () => {
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        alert(
-          `Location coordinates set : ${[
-            pos.coords.latitude,
-            pos.coords.longitude,
-          ]}`
-        );
-        setMyLocation([pos.coords.latitude, pos.coords.longitude]);
-        // setPosition([pos.coords.latitude, pos.coords.longitude]);)
-      },
-      (err) => {
-        alert(`Location Not Set! ${err}`);
-      },
-      { enableHighAccuracy: true, maximumAge: 1000 }
-    );
-  };
+  // Transmit myLocation for location
+
+  // const askForLocation = () => {
+  //   navigator.geolocation.getCurrentPosition(
+  //     (pos) => {
+  //       alert(
+  //         `Location coordinates set : ${[
+  //           pos.coords.latitude,
+  //           pos.coords.longitude,
+  //         ]}`
+  //       );
+  //       setMyLocation([pos.coords.latitude, pos.coords.longitude]);
+  //       // setPosition([pos.coords.latitude, pos.coords.longitude]);)
+  //     },
+  //     (err) => {
+  //       alert(`Location Not Set! ${err}`);
+  //     },
+  //     { enableHighAccuracy: true, maximumAge: 1000 }
+  //   );
+  // };
 
   const getAllRoutesQF = () => {
     return useAxios.get(`users/getAllDriverRoutes/${userData?._id}`);

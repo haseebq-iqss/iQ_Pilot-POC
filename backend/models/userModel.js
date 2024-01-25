@@ -27,7 +27,7 @@ const userSchema = new Schema(
     drop: [{ type: String , default :null}],
     onLeave: { type: Boolean, default: false },
     seatingCapacity: { type: Number, default : 0 },
-    numberPlate: { type: String , default : null },
+    numberPlate: { type: String , required: true },
   },
   // Options for the schema
   { timestamps: true }

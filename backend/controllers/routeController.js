@@ -1,3 +1,4 @@
+import { rootCertificates } from "tls";
 import routeModel from "../models/routeModel.js";
 
 const getAllRoutes = async (req, res) => {
@@ -124,11 +125,22 @@ const checkPassengerInRoute = async (req, res, next) => {
   try {
     const { uid } = req.params;
     const allRoutes = await routeModel.find();
-    const passengerONCab = allRoutes.filter((route) =>
-      route.passengers.includes(uid)
-    );
-    res.status(200).json({ status: "Success", route: passengerONCab[0] });
-    console.log(passengerONCab);
+
+    let routePass = null;
+
+    for (const route of allRoutes) {
+      for (const passenger of route.passengers) {
+        if (passenger._id == uid) {
+          routePass = route;
+          res.status(200).json({ status: "Success", cab: routePass });
+          return;
+        }
+      }
+    }
+
+    res
+      .status(404)
+      .json({ status: "Error", message: "Passenger not found in any route" });
   } catch (error) {
     res.status(400).json({
       error: error.message,

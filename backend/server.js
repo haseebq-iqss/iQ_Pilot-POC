@@ -6,8 +6,15 @@ import routeReviewRouter from "./routes/routeReviewRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import rideReviewRouter from "./routes/rideReviewRoutes.js";
 import cors from "cors"
+import { Server } from "socket.io";
 
 configDotenv();
+
+const corsOrigins = [
+  "http://localhost:5173",
+  "https://admin.socket.io/",
+  "https://iq-pilot.vercel.app",
+];
 
 const app = express();
 app.use(express.json())
@@ -22,13 +29,35 @@ app.use("/api/v1/getAllRoutes", routeReviewRouter);
 
 
 const PORT = process.env.PORT;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log("SERVER IS RUNNING ON PORT", PORT);
+});
+
+const io = new Server(server, {
+  cors: {
+    origin: corsOrigins
+  }
+})
+
+
+// WebSocket connection
+io.on("connection", (socket) => {
+  console.log("A user connected");
+  io.emit("User Loggin")
+
+// Change this line
+socket.on("updateDriversLocation", ({loc}) => {
+  io.emit("updatedDriversLocation", { loc }); // Emit "updatedDriversLocation" instead of the object
+});
+
+  socket.on("disconnect", () => {
+    console.log("A user disconnected");
+  });
 });
 
 
 
-// ADMIN ACTIONS 
+// ADMIN ACTIONS
 //  login (done - Umair )   EOD Thursday DONE
 //  createRoute ( Umair ) EOD Thursday DONE
 //  viewAllRoutes ( Azeem ) EOD Thursday DONE

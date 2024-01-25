@@ -12,6 +12,7 @@ import { useContext, useEffect, useState } from "react";
 import AllEmployeesContext from "../context/AllEmployeesContext";
 import RoutingMachine from "./RoutingMachine";
 import { Icon } from "leaflet";
+import { io } from "socket.io-client";
 
 type MapTypes = {
   width?: string;
@@ -26,21 +27,36 @@ const MapComponent = ({
   height = "500px",
   markersArray,
   routingEnabled = false,
-  driversLocation=false,
+  driversLocation = false,
 }: MapTypes) => {
-  const [driversPosition, setDriversPosition] = useState<any>([34.0079909, 74.90000]);
+  const [driversPosition, setDriversPosition] = useState<any>([
+    34.0079909, 74.9,
+  ]);
+
+  const [socket, setSocket] = useState(null);
 
   const { allEmps, setAllEmps } = useContext(AllEmployeesContext);
 
+  // Transmit driversPosition for location
+
   const cabIcon = new Icon({
     iconUrl: "/cab-icon.png",
-    iconSize: [40, 40],     // specify the size of your icon
+    iconSize: [40, 40], // specify the size of your icon
   });
 
   const empIcon = new Icon({
     iconUrl: "/icon-passenger.png",
-    iconSize: [40, 40],     // specify the size of your icon
+    iconSize: [40, 40], // specify the size of your icon
   });
+
+  useEffect(() => {
+    const newSocket = io("http://localhost:5000"); // Replace with your backend URL and port
+    setSocket(newSocket);
+
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
 
   function MapController() {
     //@ts-ignore
@@ -68,7 +84,7 @@ const MapComponent = ({
 
     const watchId = navigator.geolocation.watchPosition(
       (pos) => {
-        console.log("new pos : ",pos.coords);
+        // console.log("new pos : ",pos.coords);
         setDriversPosition([pos.coords.latitude, pos.coords.longitude]);
       },
       (error) => {
@@ -121,7 +137,9 @@ const MapComponent = ({
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
 
-      {driversLocation && <Marker icon={cabIcon} position={driversPosition}/>}
+        {driversLocation && (
+          <Marker icon={cabIcon} position={driversPosition} />
+        )}
 
         <MapController />
         {allEmps.length &&
@@ -129,7 +147,7 @@ const MapComponent = ({
             // console.log(marker.pickup)
             return (
               <Marker
-              icon={empIcon}
+                icon={empIcon}
                 eventHandlers={{
                   click: () => handleMarkerClick(marker),
                 }}

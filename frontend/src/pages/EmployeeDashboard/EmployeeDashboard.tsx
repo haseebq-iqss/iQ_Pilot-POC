@@ -11,17 +11,42 @@ function EmployeeDashboard() {
   const navigate = useNavigate();
   const { userData } = useContext(UserDataContext);
 
+  const getPassengerRoutesQF = () => {
+    return useAxios.get(`routes/getPassengersCab/${userData?._id}`);
+  };
+
+  const { data: myCab, status: routesStatus } = useQuery({
+    queryKey: ["My Cab"],
+    queryFn: getPassengerRoutesQF,
+    select: (data) => {
+      return data?.data?.cab;
+    },
+  });
+
+  const getMyDriverQF = () => {
+    return useAxios.get(`users/${myCab?.assignedToDriver}`);
+  };
+
+  const { data: myDriver } = useQuery({
+    queryKey: ["My Driver"],
+    queryFn: getMyDriverQF,
+    enabled: routesStatus === "success",
+    select: (data) => {
+      return data?.data?.data
+    },
+  });
+
   return (
     <div className="emp-dash-container">
       <div className="cab-detail-card">
-        <h3>Pickup for 2 PM</h3>
+        <h3>Pickup for {myCab?.shiftTime} PM</h3>
         <div className="driver">
           <img src="/driver.jpg" alt="" width={"30px"} height={"30px"} />
-          <h5>Bashir Ahmed</h5>
+          <h5>{myDriver?.name}</h5>
           <Btn>Call</Btn>
         </div>
         <div className="number-plate">
-          <h1>JK01 AK 1151</h1>
+          <h1>{myDriver?.numberPlate}</h1>
         </div>
         <Btn>X Cancel Cab</Btn>
       </div>

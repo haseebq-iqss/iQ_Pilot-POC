@@ -37,6 +37,11 @@ const MapComponent = ({
     iconSize: [40, 40],     // specify the size of your icon
   });
 
+  const empIcon = new Icon({
+    iconUrl: "/icon-passenger.png",
+    iconSize: [40, 40],     // specify the size of your icon
+  });
+
   function MapController() {
     //@ts-ignore
     const map = useMapEvents({
@@ -124,6 +129,7 @@ const MapComponent = ({
             // console.log(marker.pickup)
             return (
               <Marker
+              icon={empIcon}
                 eventHandlers={{
                   click: () => handleMarkerClick(marker),
                 }}

@@ -1,16 +1,41 @@
-import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";
+import {
+  MapContainer,
+  Marker,
+  Popup,
+  TileLayer,
+  useMapEvents,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-routing-machine";
 // import { OpenStreetMapProvider } from "leaflet-geosearch";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import AllEmployeesContext from "../context/AllEmployeesContext";
+import RoutingMachine from "./RoutingMachine";
+import { Icon } from "leaflet";
 
 type MapTypes = {
   width?: string;
   height?: string;
+  markersArray?: [any];
+  routingEnabled?: boolean;
+  driversLocation?: boolean;
 };
 
-const MapComponent = ({ width = "100%", height = "500px" }: MapTypes) => {
-  const [position, setPosition] = useState<any>("");
+const MapComponent = ({
+  width = "100%",
+  height = "500px",
+  markersArray,
+  routingEnabled = false,
+  driversLocation=false,
+}: MapTypes) => {
+  const [driversPosition, setDriversPosition] = useState<any>([34.0079909, 74.90000]);
+
+  const { allEmps, setAllEmps } = useContext(AllEmployeesContext);
+
+  const cabIcon = new Icon({
+    iconUrl: "/cab-icon.png",
+    iconSize: [40, 40],     // specify the size of your icon
+  });
 
   function MapController() {
     //@ts-ignore
@@ -28,7 +53,7 @@ const MapComponent = ({ width = "100%", height = "500px" }: MapTypes) => {
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((pos: any) => {
-      setPosition([pos.coords.latitude, pos.coords.longitude]);
+      // setDriversPosition([pos.coords.latitude, pos.coords.longitude]);
       console.log("Permission granted");
     });
 
@@ -38,8 +63,8 @@ const MapComponent = ({ width = "100%", height = "500px" }: MapTypes) => {
 
     const watchId = navigator.geolocation.watchPosition(
       (pos) => {
-        console.log(pos);
-        setPosition([pos.coords.latitude, pos.coords.longitude]);
+        console.log("new pos : ",pos.coords);
+        setDriversPosition([pos.coords.latitude, pos.coords.longitude]);
       },
       (error) => {
         console.error("Error getting location:", error.message);
@@ -53,6 +78,28 @@ const MapComponent = ({ width = "100%", height = "500px" }: MapTypes) => {
 
     return () => navigator.geolocation.clearWatch(watchId);
   }, []);
+
+  const [selectedMarker, setSelectedMarker] = useState<any>(null);
+
+  const handleMarkerClick = (marker: any) => {
+    setSelectedMarker(marker);
+  };
+
+  const allRouting = allEmps?.length
+    ? allEmps.map((emp: any) => {
+        return emp.pickUp;
+      })
+    : [];
+  // const allRoutingX = [
+  //   [34.0158662, 74.8034567],
+  //   [34.0396279, 74.7934329],
+  //   [34.0288418, 74.8082178],
+  //   [34.0960689, 74.8255204],
+  // ]
+  // console.log(allRouting);
+  // console.log(allRoutingX)
+
+  // console.log(driversPosition)
 
   return (
     <div style={{ position: "relative", height, width, overflow: "hidden" }}>
@@ -68,8 +115,35 @@ const MapComponent = ({ width = "100%", height = "500px" }: MapTypes) => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
+
+      {driversLocation && <Marker icon={cabIcon} position={driversPosition}/>}
+
         <MapController />
-        <Marker position={position ? position : [34.0836, 74.7973]} />
+        {allEmps.length &&
+          allEmps.map((marker: any) => {
+            // console.log(marker.pickup)
+            return (
+              <Marker
+                eventHandlers={{
+                  click: () => handleMarkerClick(marker),
+                }}
+                key={marker._id}
+                position={marker.pickUp}
+              />
+            );
+          })}
+
+        {selectedMarker && (
+          <Popup position={selectedMarker?.pickUp} closeButton>
+            {/* Your card content here */}
+            <div>
+              <h2>{selectedMarker.name}</h2>
+              <p>{selectedMarker.address}</p>
+              <p>Call: {selectedMarker.phone}</p>
+            </div>
+          </Popup>
+        )}
+        {routingEnabled && allRouting && <RoutingMachine routes={allRouting} />}
       </MapContainer>
     </div>
   );

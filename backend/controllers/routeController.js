@@ -5,7 +5,7 @@ const getAllRoutes = async (req, res) => {
     const routes = await routeModel.find();
     res.status(200).json({
       message: "Success",
-      count : routes.length,
+      count: routes.length,
       data: routes,
     });
   } catch (error) {
@@ -37,6 +37,29 @@ const getRoute = async (req, res) => {
   }
 };
 
+const getAllDriverRoutes = async (req, res) => {
+  try {
+    const driverId = req.params.did; // Use 'did' as the parameter name
+
+    const routes = await routeModel.find({ assignedToDriver: driverId });
+
+    if (!routes || routes.length === 0) {
+      return res.status(404).json({
+        message: "No routes found for the specified driver",
+      });
+    }
+
+    res.status(200).json({
+      message: "Routes found",
+      data: routes,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+    });
+  }
+};
+
 const addRoute = async (req, res) => {
   try {
     const route = await routeModel.create(req.body);
@@ -50,6 +73,7 @@ const addRoute = async (req, res) => {
     });
   }
 };
+
 
 const updateRoute = async (req, res) => {
   try {
@@ -97,4 +121,4 @@ const deleteRoute = async (req, res) => {
   }
 };
 
-export { getAllRoutes, getRoute, addRoute, updateRoute, deleteRoute };
+export { getAllRoutes, getRoute, getAllDriverRoutes, addRoute, updateRoute, deleteRoute };

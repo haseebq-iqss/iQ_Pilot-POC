@@ -23,7 +23,7 @@ const userSchema = new Schema(
     },
 
     // Optional details
-    pickUp: [{ type: String, default : null}],
+    pickUp: [{ type: Number, default : null}],
     drop: [{ type: String , default :null}],
     onLeave: { type: Boolean, default: false },
     seatingCapacity: { type: Number, default : 0 },

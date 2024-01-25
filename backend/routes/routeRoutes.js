@@ -2,6 +2,7 @@ import express from "express";
 import {
   addRoute,
   deleteRoute,
+  getAllDriverRoutes,
   getAllRoutes,
   getRoute,
   updateRoute,
@@ -10,6 +11,7 @@ import {
 const routeRouter = express.Router();
 
 routeRouter.route("/").get(getAllRoutes).post(addRoute);
+routeRouter.route("/getAllDriverRoutes/:did").get(getAllDriverRoutes)
 
 routeRouter.route("/:id").get(getRoute).put(updateRoute).delete(deleteRoute);
 

@@ -1,25 +1,23 @@
-import { Route, Routes } from "react-router-dom";
-import Landing from "./pages/Landing/Landing";
-import Login from "./pages/Login/Login";
-import Signup from "./pages/Signup/Signup";
-import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
-import DriverDashboard from "./pages/DriverDashboard/DriverDashboard";
-import EmployeeDashboard from "./pages/EmployeeDashboard/EmployeeDashboard";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import MainNavigator from "./navigator/MainNavigator";
+import UserDataContext from "./context/UserDataContext";
+import { useState } from "react";
+import AllEmployeesContext from "./context/AllEmployeesContext";
 
 function App() {
+  const [userData, setUserData] = useState<any>({});
+  const [allEmps, setAllEmps] = useState<any>({});
   return (
     <div
       style={{ width: "100%", minHeight: "100vh" }}
       className="main-container"
     >
-      <Routes>
-        <Route index element={<Landing />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/driver" element={<DriverDashboard />} />
-        <Route path="/employee" element={<EmployeeDashboard />} />
-      </Routes>
+      <UserDataContext.Provider value={{ userData, setUserData }}>
+        <AllEmployeesContext.Provider value={{ allEmps, setAllEmps }}>
+          <MainNavigator />
+        </AllEmployeesContext.Provider>
+      </UserDataContext.Provider>
+      <ReactQueryDevtools />
     </div>
   );
 }

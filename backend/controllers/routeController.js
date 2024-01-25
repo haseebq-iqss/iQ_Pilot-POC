@@ -5,7 +5,7 @@ const getAllRoutes = async (req, res) => {
     const routes = await routeModel.find();
     res.status(200).json({
       message: "Success",
-      count : routes.length,
+      count: routes.length,
       data: routes,
     });
   } catch (error) {
@@ -97,4 +97,27 @@ const deleteRoute = async (req, res) => {
   }
 };
 
-export { getAllRoutes, getRoute, addRoute, updateRoute, deleteRoute };
+const checkPassengerInRoute = async (req, res, next) => {
+  try {
+    const { uid } = req.params;
+    const allRoutes = await routeModel.find();
+    const passengerONCab = allRoutes.filter((route) =>
+      route.passengers.includes(uid)
+    );
+    res.status(200).json({ status: "Success", route: passengerONCab[0] });
+    console.log(passengerONCab);
+  } catch (error) {
+    res.status(400).json({
+      error: error.message,
+    });
+  }
+};
+
+export {
+  getAllRoutes,
+  getRoute,
+  addRoute,
+  updateRoute,
+  deleteRoute,
+  checkPassengerInRoute,
+};

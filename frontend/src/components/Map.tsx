@@ -23,7 +23,8 @@ type MapTypes = {
   driversLocation?: boolean;
 };
 
-const socket = io("http://localhost:5000");
+// const socket = io("http://localhost:5000");
+const socket = io("https://iq-back-cevq.onrender.com");
 
 const MapComponent = ({
   width = "100%",

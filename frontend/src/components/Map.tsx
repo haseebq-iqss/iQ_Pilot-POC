@@ -13,6 +13,7 @@ import AllEmployeesContext from "../context/AllEmployeesContext";
 import RoutingMachine from "./RoutingMachine";
 import { Icon } from "leaflet";
 import { io } from "socket.io-client";
+import UserDataContext from "../context/UserDataContext";
 
 type MapTypes = {
   width?: string;
@@ -21,6 +22,8 @@ type MapTypes = {
   routingEnabled?: boolean;
   driversLocation?: boolean;
 };
+
+const socket = io("http://localhost:5000"); // Replace with your backend URL and port
 
 const MapComponent = ({
   width = "100%",
@@ -33,11 +36,41 @@ const MapComponent = ({
     34.0079909, 74.9,
   ]);
 
-  const [socket, setSocket] = useState(null);
-
   const { allEmps, setAllEmps } = useContext(AllEmployeesContext);
+  const { userData } = useContext(UserDataContext);
+
+  const [liveDrivers, setLiveDrivers] = useState<any>([]);
 
   // Transmit driversPosition for location
+
+  const sendLocation = () => {
+    // const driverId = userData?._id;
+    if (userData?.role ==="driver") {
+      socket.emit("driver-location", driversPosition);
+    }
+  };
+
+  sendLocation();
+
+  useEffect(() => {
+    const handleDriverLocation = (msg) => {
+      console.log(`received location -> ${msg}`);
+      setLiveDrivers(JSON.parse(msg));
+
+      // Remove the event listener after the first update
+      socket.off("driver-location", handleDriverLocation);
+    };
+
+    // Add the event listener
+    socket.on("driver-location", handleDriverLocation);
+
+    // Cleanup the event listener when the component unmounts
+    return () => {
+      socket.off("driver-location", handleDriverLocation);
+    };
+  }, [socket]);
+
+  console.log(liveDrivers);
 
   const cabIcon = new Icon({
     iconUrl: "/cab-icon.png",
@@ -48,15 +81,6 @@ const MapComponent = ({
     iconUrl: "/icon-passenger.png",
     iconSize: [40, 40], // specify the size of your icon
   });
-
-  useEffect(() => {
-    const newSocket = io("http://localhost:5000"); // Replace with your backend URL and port
-    setSocket(newSocket);
-
-    return () => {
-      newSocket.disconnect();
-    };
-  }, []);
 
   function MapController() {
     //@ts-ignore
@@ -139,6 +163,10 @@ const MapComponent = ({
 
         {driversLocation && (
           <Marker icon={cabIcon} position={driversPosition} />
+          )}
+
+        {liveDrivers?.length && (
+          <Marker icon={cabIcon} position={liveDrivers} />
         )}
 
         <MapController />

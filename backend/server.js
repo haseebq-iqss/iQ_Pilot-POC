@@ -42,13 +42,12 @@ const io = new Server(server, {
 
 // WebSocket connection
 io.on("connection", (socket) => {
-  console.log("A user connected");
-  io.emit("User Loggin")
+  console.log("A user connected", socket.id);
 
-// Change this line
-socket.on("updateDriversLocation", ({loc}) => {
-  io.emit("updatedDriversLocation", { loc }); // Emit "updatedDriversLocation" instead of the object
-});
+  socket.on("driver-location", (data) => {
+    console.log(data)
+    socket.emit("driver-location", JSON.stringify(data))
+  });
 
   socket.on("disconnect", () => {
     console.log("A user disconnected");

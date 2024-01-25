@@ -4,7 +4,7 @@ const routeSchema = new Schema(
   {
     assignedToDriver: { type: String, required: true },
 
-    passengers: [{ type: String, required: true }],
+    passengers: [{ type: Object, required: true }],
 
     shiftTime: { type: String, required: true },
 

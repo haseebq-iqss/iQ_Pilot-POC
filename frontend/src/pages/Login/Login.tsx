@@ -1,11 +1,28 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import Btn from "../../components/Button";
-import { FormEvent } from "react";
+import { FormEvent, useContext } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useAxios } from "../../hooks/useAxios";
+import UserDataContext from "../../context/UserDataContext";
 
 function Login() {
   const location = useLocation();
   const navigate = useNavigate();
   const user = location.state;
+
+  const { userData, setUserData } = useContext(UserDataContext);
+
+  const loginMF = (loginData: any) => {
+    return useAxios.post("users/login", loginData);
+  };
+
+  const { status, mutate: login } = useMutation({
+    mutationFn: loginMF,
+    onSuccess: (data) => {
+      setUserData(data?.data?.data);
+      navigate(`/${data?.data?.data?.role}`);
+    },
+  });
 
   const handleLogin = (e: FormEvent<any>) => {
     e.preventDefault();
@@ -14,7 +31,8 @@ function Login() {
       password: e.currentTarget?.password?.value,
     };
 
-    console.log(loginData);
+    login(loginData);
+    // console.log(loginData);
   };
 
   return (
@@ -56,8 +74,11 @@ function Login() {
           type="password"
           placeholder="Password"
         />
-        {/* <Btn type="submit">Login</Btn> */}
-        <Btn
+        <Btn type="submit" disabled={status === "pending"}>
+          Login
+        </Btn>
+        {/* <Btn
+          disabled={status === "pending"}
           onClick={() =>
             navigate(
               user === "driver"
@@ -69,7 +90,7 @@ function Login() {
           }
         >
           Login
-        </Btn>
+        </Btn> */}
       </form>
       {user !== "admin" && (
         <>

@@ -1,0 +1,19 @@
+.select-pass-container {
+    width: 100vw;
+    min-height:100vh ;
+    display: flex;
+    // flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    .selectedList {
+        width: 30%;
+        border: 2px solid black;
+        min-height: 100vh;
+    }
+    
+    .map {
+        width: 70%;
+        min-height: 100vh;
+    }
+}

@@ -44,6 +44,6 @@ app.listen(PORT, () => {
 // EMPLOYEE ACTIONS
 // login <same>(done - Umair) EOD Thursday
 // signup <same> (done - Umair) EOD Thursday
-// cancelCab ( Umair )  EOD Thursday
+// cancelCab ( Umair )  EOD Thursday    --- Mark as Leave in User
 // markOnLeave ( Umair )  EOD Thursday
 

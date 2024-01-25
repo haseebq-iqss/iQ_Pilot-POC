@@ -1,6 +1,9 @@
-import { FormEvent, InputHTMLAttributes, useState } from "react";
+import { FormEvent, InputHTMLAttributes, useContext, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Btn from "./../../components/Button";
+import { useAxios } from "../../hooks/useAxios";
+import { useMutation } from "@tanstack/react-query";
+import UserDataContext from "../../context/UserDataContext";
 
 function Signup() {
   const location = useLocation();
@@ -8,10 +11,17 @@ function Signup() {
   const user = location.state;
   const [latLon, setLatLon] = useState<Array<number>>();
 
+  const { userData, setUserData } = useContext(UserDataContext);
+  
   const askForLocation = () => {
     navigator.geolocation.getCurrentPosition(
       (pos) => {
-        alert(`Location coordinates set : ${[pos.coords.latitude, pos.coords.longitude]}`);
+        alert(
+          `Location coordinates set : ${[
+            pos.coords.latitude,
+            pos.coords.longitude,
+          ]}`
+        );
         setLatLon([pos.coords.latitude, pos.coords.longitude]);
         // setPosition([pos.coords.latitude, pos.coords.longitude]);)
       },
@@ -22,17 +32,35 @@ function Signup() {
     );
   };
 
+  const signupMF = (signupData: any) => {
+    return useAxios.post("users/signup", signupData);
+  };
+
+  const { status, mutate: signup } = useMutation({
+    mutationFn: signupMF,
+    onSuccess: (data) => {
+      setUserData(data?.data?.data);
+      navigate(`/${data?.data?.data?.role}`);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+
   const handleSignup = (e: FormEvent<any>) => {
     e.preventDefault();
     const signupData = {
       name: e.currentTarget?.name?.value,
       phone: e.currentTarget?.phone?.value,
       email: e.currentTarget?.email?.value,
-      pickup: latLon,
+      pickUp: latLon,
+      role: user,
       drop: latLon,
       address: e.currentTarget?.address?.value,
       password: e.currentTarget?.password?.value,
     };
+
+    signup(signupData);
 
     console.log(signupData);
   };
@@ -83,7 +111,9 @@ function Signup() {
           type="text"
           placeholder="Email"
         />
-        <Btn onClick={() => askForLocation()}>{user === "driver" ? "Set Starting Point" : "Set Pickup Location"}</Btn>
+        <Btn onClick={() => askForLocation()}>
+          {user === "driver" ? "Set Starting Point" : "Set Pickup Location"}
+        </Btn>
         <input
           required
           name="address"
@@ -124,11 +154,13 @@ function Signup() {
           placeholder="Confirm Password"
         />
 
-        <Btn type="submit">Register</Btn>
+        <Btn disabled={status === "pending"} type="submit">
+          Register
+        </Btn>
       </form>
       <>
-      <p>OR</p>
-      <Btn onClick={() => navigate("/login", { state: user })}>Login</Btn>
+        <p>OR</p>
+        <Btn onClick={() => navigate("/login", { state: user })}>Login</Btn>
       </>
     </div>
   );

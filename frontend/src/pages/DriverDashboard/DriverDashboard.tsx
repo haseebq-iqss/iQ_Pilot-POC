@@ -37,7 +37,7 @@ function DriverDashboard() {
   };
 
   const getAllRoutesQF = () => {
-    return useAxios.get(`routes/getAllDriverRoutes/${userData?._id}`);
+    return useAxios.get(`users/getAllDriverRoutes/${userData?._id}`);
   };
 
   const { data: allRoutes, status: routesStatus } = useQuery({
@@ -47,6 +47,8 @@ function DriverDashboard() {
       return data?.data?.data;
     },
   });
+
+  console.log(allRoutes)
 
   if (routesStatus === "success") {
     // setAllEmps(allRoutes?.passengers)

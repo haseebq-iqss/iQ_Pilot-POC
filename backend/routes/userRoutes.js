@@ -10,9 +10,12 @@ import {
 import getAllDrivers from "../controllers/viewAll/getAllDrivers.js";
 
 import { getAllTeamMembers } from "../controllers/viewAll/getAllTM.js";
+import { getAllDriverRoutes } from "../controllers/routeController.js";
 const userRouter = express.Router();
 
 userRouter.get("/getAllDrivers", getAllDrivers);
+
+userRouter.get("/getAllDriverRoutes/:did", getAllDriverRoutes);
 
 userRouter.get("/employees", getAllTeamMembers);
 userRouter.route("/").get(getAllUsers);

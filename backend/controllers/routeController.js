@@ -143,4 +143,5 @@ export {
   updateRoute,
   deleteRoute,
   checkPassengerInRoute,
+  getAllDriverRoutes
 };

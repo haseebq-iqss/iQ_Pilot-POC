@@ -45,8 +45,8 @@ io.on("connection", (socket) => {
   console.log("A user connected", socket.id);
 
   socket.on("driver-location", (data) => {
-    console.log(data)
-    socket.emit("driver-location", JSON.stringify(data))
+    console.log("data recieved on backend -> ",data)
+    socket.broadcast.emit("driver-location", JSON.stringify(data))
   });
 
   socket.on("disconnect", () => {

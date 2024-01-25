@@ -23,7 +23,7 @@ type MapTypes = {
   driversLocation?: boolean;
 };
 
-const socket = io("http://localhost:5000"); // Replace with your backend URL and port
+const socket = io("http://localhost:5000");
 
 const MapComponent = ({
   width = "100%",
@@ -32,9 +32,7 @@ const MapComponent = ({
   routingEnabled = false,
   driversLocation = false,
 }: MapTypes) => {
-  const [driversPosition, setDriversPosition] = useState<any>([
-    34.0079909, 74.9,
-  ]);
+  const [driversPosition, setDriversPosition] = useState<any>();
 
   const { allEmps, setAllEmps } = useContext(AllEmployeesContext);
   const { userData } = useContext(UserDataContext);
@@ -42,36 +40,31 @@ const MapComponent = ({
   const [liveDrivers, setLiveDrivers] = useState<any>([]);
 
   // Transmit driversPosition for location
+  // if (userData?.role == "driver") {
+  // socket.emit("driver-location", driversPosition);
+  // }
 
-  const sendLocation = () => {
-    // const driverId = userData?._id;
-    console.log(userData)
-    // if (userData?.role == "driver") {
-      socket.emit("driver-location", driversPosition);
-    // }
-  };
-
-  sendLocation();
+  const dumDat = [34.0078555, 74.8037114];
 
   useEffect(() => {
-    const handleDriverLocation = (msg) => {
-      console.log(`received location -> ${msg}`);
-      setLiveDrivers(JSON.parse(msg));
-
-      // Remove the event listener after the first update
-      socket.off("driver-location", handleDriverLocation);
-    };
-
-    // Add the event listener
-    socket.on("driver-location", handleDriverLocation);
-
-    // Cleanup the event listener when the component unmounts
-    return () => {
-      socket.off("driver-location", handleDriverLocation);
-    };
+    socket.on("driver-location", (data) => {
+      console.log("------->  ", JSON.parse(data));
+      // console.log("DD ----> ", dumDat)
+      if (data !== null) {
+        setLiveDrivers(JSON.parse(data));
+      }
+    });
   }, [socket]);
 
-  console.log(liveDrivers);
+  const sendLocation = () => {
+    socket.emit("driver-location", driversPosition);
+  };
+
+  useEffect(() => {
+    if (userData?.role == "driver") {
+      sendLocation();
+    }
+  }, [driversPosition]);
 
   const cabIcon = new Icon({
     iconUrl: "/cab-icon.png",
@@ -131,6 +124,8 @@ const MapComponent = ({
     setSelectedMarker(marker);
   };
 
+  // console.log(liveDrivers)
+
   const allRouting = allEmps?.length
     ? allEmps.map((emp: any) => {
         return emp.pickUp;
@@ -162,9 +157,9 @@ const MapComponent = ({
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
 
-        {driversLocation && (
+        {/* {driversLocation && (
           <Marker icon={cabIcon} position={driversPosition} />
-          )}
+          )} */}
 
         {liveDrivers?.length && (
           <Marker icon={cabIcon} position={liveDrivers} />

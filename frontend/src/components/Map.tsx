@@ -47,6 +47,8 @@ const MapComponent = ({
 
   const dumDat = [34.0078555, 74.8037114];
 
+  const officeLoc = [34.07872, 74.8158976];
+
   useEffect(() => {
     socket.on("driver-location", (data) => {
       console.log("------->  ", JSON.parse(data));
@@ -74,6 +76,11 @@ const MapComponent = ({
 
   const empIcon = new Icon({
     iconUrl: "/icon-passenger.png",
+    iconSize: [40, 40], // specify the size of your icon
+  });
+
+  const officeIcon = new Icon({
+    iconUrl: "/office-icon.png",
     iconSize: [40, 40], // specify the size of your icon
   });
 
@@ -133,7 +140,7 @@ const MapComponent = ({
       })
     : [];
 
-    console.log(allRouting)
+  console.log(allRouting);
   // const allRoutingX = [
   //   [34.0158662, 74.8034567],
   //   [34.0396279, 74.7934329],
@@ -162,11 +169,13 @@ const MapComponent = ({
 
         {driversPosition && (
           <Marker icon={cabIcon} position={driversPosition} />
-          )}
+        )}
 
         {liveDrivers?.length && (
           <Marker icon={cabIcon} position={liveDrivers} />
         )}
+
+        <Marker icon={officeIcon} position={[34.0837559, 74.8229426]} />
 
         <MapController />
         {allEmps?.length &&
@@ -187,13 +196,7 @@ const MapComponent = ({
         {markersArray?.length &&
           markersArray.map((marker: any) => {
             // console.log(marker.pickup)
-            return (
-              <Marker
-                icon={empIcon}
-                key={marker}
-                position={marker}
-              />
-            );
+            return <Marker icon={empIcon} key={marker} position={marker} />;
           })}
 
         {selectedMarker && (
@@ -206,7 +209,9 @@ const MapComponent = ({
             </div>
           </Popup>
         )}
-        {routingEnabled && allRouting && <RoutingMachine routes={allRouting} />}
+        {routingEnabled && allRouting && (
+          <RoutingMachine routes={[...allRouting, [34.0837559, 74.8229426]]} />
+        )}
       </MapContainer>
     </div>
   );

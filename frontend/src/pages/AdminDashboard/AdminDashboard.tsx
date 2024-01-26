@@ -158,7 +158,7 @@ function AdminDashboard() {
           <h5>Total Kms</h5>
         </div>
       </div>
-      <MapComponent markersArray={allTMs} />
+      <MapComponent />
     </div>
   );
 }

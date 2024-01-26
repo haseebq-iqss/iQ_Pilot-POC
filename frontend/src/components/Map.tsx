@@ -99,31 +99,32 @@ const MapComponent = ({
   }
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition((pos: any) => {
-      // setDriversPosition([pos.coords.latitude, pos.coords.longitude]);
-      console.log("Permission granted");
-    });
+    if (userData?.role === "driver") {
+      navigator.geolocation.getCurrentPosition((pos: any) => {
+        // setDriversPosition([pos.coords.latitude, pos.coords.longitude]);
+        console.log("Permission granted");
+      });
 
-    // MAKE AN ERROR ALERT IF THE PERMISSION WAS REJECTED!
+      // MAKE AN ERROR ALERT IF THE PERMISSION WAS REJECTED!
 
-    // ASK FOR THE LOCATION PERMISSION FIRST !
+      // ASK FOR THE LOCATION PERMISSION FIRST !
 
-    const watchId = navigator.geolocation.watchPosition(
-      (pos) => {
-        // console.log("new pos : ",pos.coords);
-        setDriversPosition([pos.coords.latitude, pos.coords.longitude]);
-      },
-      (error) => {
-        console.error("Error getting location:", error.message);
-      },
-      {
-        enableHighAccuracy: true,
-        // timeout: 5000,
-        maximumAge: 0,
-      }
-    );
-
-    return () => navigator.geolocation.clearWatch(watchId);
+      const watchId = navigator.geolocation.watchPosition(
+        (pos) => {
+          // console.log("new pos : ",pos.coords);
+          setDriversPosition([pos.coords.latitude, pos.coords.longitude]);
+        },
+        (error) => {
+          console.error("Error getting location:", error.message);
+        },
+        {
+          enableHighAccuracy: true,
+          // timeout: 5000,
+          maximumAge: 0,
+        }
+      );
+      return () => navigator.geolocation.clearWatch(watchId);
+    }
   }, []);
 
   const [selectedMarker, setSelectedMarker] = useState<any>(null);
